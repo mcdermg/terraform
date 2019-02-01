@@ -1,0 +1,9 @@
+variable "profile" {}
+variable "region" {}
+variable "identifier" {}
+variable "name" {}
+variable "username" {}
+variable "password" {}
+variable "Name" {}
+variable "Stage" {}
+variable "Owner" {}

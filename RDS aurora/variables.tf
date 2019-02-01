@@ -1,0 +1,10 @@
+variable "profile" {}
+variable "region" {}
+variable "instance_class" {}
+variable "cluster_identifier" {}
+variable "database_name" {}
+variable "master_username" {}
+variable "master_password" {}
+variable "Name" {}
+variable "Stage" {}
+variable "Owner" {}
