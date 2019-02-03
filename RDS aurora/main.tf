@@ -18,7 +18,7 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 
 resource "aws_rds_cluster" "default" {
   cluster_identifier = "${var.cluster_identifier}"
-  availability_zones = ["eu-west-1", "eu-west-2", "eu-west-3",]
+  availability_zones = ["eu-west-1a", "eu-west-1b", "eu-west-1c",]
   database_name      = "${var.database_name}"
   master_username    = "${var.master_username}"
   master_password    = "${var.master_password}"
