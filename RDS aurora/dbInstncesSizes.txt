@@ -1,3 +1,5 @@
+#List of instances for aurora clusters
+
 db.t2.small
 db.t2.medium
 db.r3.large
