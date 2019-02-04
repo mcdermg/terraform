@@ -1,9 +1,17 @@
 variable "profile" {}
 variable "region" {}
-variable "identifier" {}
-variable "name" {}
+
+variable "allocated_storage" {}
+variable "storage_type" {}
+variable "engine" {}
+variable "engine_version" {}
+variable "instance_class" {}
+variable "database_name" {}
 variable "username" {}
 variable "password" {}
-variable "Name" {}
-variable "Stage" {}
-variable "Owner" {}
+#variable "parameter_group_name" {}
+variable "identifier" {}
+
+variable "Tag_Name" {}
+variable "Tag_Stage" {}
+variable "Tag_Owner" {}
