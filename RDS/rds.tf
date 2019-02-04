@@ -14,11 +14,16 @@ resource "aws_db_instance" "default" {
   password             = "${var.password}"
   parameter_group_name = "default.mysql5.7"
   identifier           = "${var.identifier}"
+  # No final snapshot when using Terraform destroy
   skip_final_snapshot  = "True"
 
   tags {
     Name  = "${var.Tag_Name}"
     Stage = "${var.Tag_Stage}"
     Owner = "${var.Tag_Owner}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo ${aws_db_instance.default.endpoint} > endpoint.txt"
   }
 }
