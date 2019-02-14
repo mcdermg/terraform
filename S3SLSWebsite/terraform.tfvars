@@ -1,4 +1,4 @@
-profile         = "labcli"
+profile         = "personalAdmin"
 region          = "ca-central-1"
 
 Tag_Name              = "gmcdslssite-20190213"
