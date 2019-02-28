@@ -28,15 +28,15 @@ resource "null_resource" "raspberry_pi_bootstrap" {
 
       # SYSTEM AND PACKAGE UPDATES
       "sudo apt-get update -y",
-      #look this up, what is it
+      #upgrades & changes dependencies
       #"sudo apt-get dist-upgrade -y",
 
       # NETWORKING - SET STATIC IP
-      # "echo 'interface eth0\nstatic ip_address=${var.static_ip_and_mask}\nstatic routers=${var.static_router}\nstatic domain_name_servers=${var.static_dns}' | cat >> /etc/dhcpcd.conf",
+      "echo 'interface eth0\nstatic ip_address=${var.static_ip_and_mask}\nstatic routers=${var.static_router}\nstatic domain_name_servers=${var.static_dns}' | cat >> /etc/dhcpcd.conf",
 
       # REBOOT
-      #"sudo shutdown -r 30"
-      "sudo reboot"
+      "sudo shutdown -r 30"
+      #"sudo reboot"
     ]
   }
 }

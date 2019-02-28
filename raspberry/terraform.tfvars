@@ -9,7 +9,7 @@ username = "pi"
 password = "raspberry"
 
 # CONIGURATION PARAMETERS
-new_hostname = "raspberrypi_brenda"
+new_hostname = "raspberrypi_gmcd"
 new_password = "chefVancouver866"
 # Validate timezone correctness against 'timedatectl list-timezones'
 timezone = "America/Vancouver"
@@ -17,7 +17,6 @@ timezone = "America/Vancouver"
 # NETWORK CONFIGURATION PARAMETERS
 # See man dhcpcd.conf for further info and examples.
 # Get these right or risk loss of network connectivity.
-# static_ip_and_mask = "192.168.1.75/24"
-# static_router = "192.168.1.254"
-# check this and above to confirm
-# static_dns = "192.168.1.1"
+static_ip_and_mask = "192.168.1.75/24"
+static_router = "192.168.1.254"
+static_dns = "192.168.1.254"
