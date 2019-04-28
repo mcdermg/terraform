@@ -4,7 +4,7 @@
 # terraform apply -var 'password=PASSWORD' -var 'new_password=NEWPASS'
 
 # CONNECTION PARAMETERS
-raspberrypi_ip = "192.168.0.35"
+raspberrypi_ip = "192.168.0.38"
 username = "pi"
 password = "raspberry"
 
@@ -17,6 +17,6 @@ timezone = "America/Argentina/Buenos_Aires"
 # NETWORK CONFIGURATION PARAMETERS
 # See man dhcpcd.conf for further info and examples.
 # Get these right or risk loss of network connectivity.
-static_ip_and_mask = "192.168.0.35/24"
+static_ip_and_mask = "192.168.0.38/24"
 static_router = "192.168.0.1"
 static_dns = "100.72.3.97"

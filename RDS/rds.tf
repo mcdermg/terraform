@@ -24,6 +24,13 @@ resource "aws_db_instance" "default" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${aws_db_instance.default.endpoint} > endpoint.txt"
+    command = "echo #!/usr/bin/env python
+    import preprocessing
+
+    mysql = {'host': '${aws_db_instance.default.address}',
+             'user': '${aws_db_instance.default.username}',
+             'password': '${aws_db_instance.default.password}',
+             'db': '${aws_db_instance.default.name}'
+             } > databaseconfig.py"
   }
 }

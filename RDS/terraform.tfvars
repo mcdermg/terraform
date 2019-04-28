@@ -1,5 +1,5 @@
 profile               = "labcli"
-region                = "ca-central-1"
+region                = "eu-west-1"
 
 allocated_storage     = 10
 storage_type          = "gp2"

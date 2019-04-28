@@ -10,7 +10,6 @@ resource "null_resource" "raspberry_pi_db" {
     inline = [
       # SETUP MySQL DB
       "sudo apt-get install mariadb-server -y"
-
     ]
   }
 }
