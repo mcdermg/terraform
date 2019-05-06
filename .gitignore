@@ -8,5 +8,6 @@
 # .tfvars files
 *.tfvars
 
+#output files
 *.csv
-commands.txt
+*.txt
