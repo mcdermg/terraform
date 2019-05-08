@@ -8,10 +8,10 @@ resource "random_id" "Tag_Name" {
 }
 
 resource "aws_instance" "test1" {
-  ami            = "${var.ami}"
-  instance_type  = "${var.instance_type}"
-  key_name       = "${var.key_name}"
-  user_data      = "${var.user_data}"
+  ami           = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name      = "${var.key_name}"
+  user_data     = "${var.user_data}"
 
   tags {
     Stage = "${var.Tag_Stage}"
