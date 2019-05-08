@@ -16,7 +16,7 @@ resource "aws_instance" "EC2" {
   }
 }
 
-resource "aws_eip" "ip" {
+resource "aws_eip" "EC2_public_IP" {
   instance   = "${aws_instance.EC2.id}"
   vpc        = true
   depends_on = ["aws_instance.EC2"]
