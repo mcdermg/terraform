@@ -1,1 +1,0 @@
-db-123456789.cpszcw5s9qrb.ca-central-1.rds.amazonaws.com:3306
