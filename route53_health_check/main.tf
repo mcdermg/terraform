@@ -1,4 +1,4 @@
-resource "aws_route53_health_check" "example" {
+resource "aws_route53_health_check" "demotestsite" {
   fqdn              = "${var.fqdn}"
   port              = "${var.port}"
   type              = "${var.type}"
@@ -7,11 +7,20 @@ resource "aws_route53_health_check" "example" {
   request_interval  = "30"
 
   tags = {
-    Name = "tf-test-health-check"
+    Name = "demotestsite.net-health-check"
   }
 }
 
-#module "state" {
-#  source = "../state"
+#resource "aws_route53_health_check" "demotestsite" {
+#  fqdn              = "${var.fqdn}"
+#  port              = "${var.port}"
+#  type              = "${var.type}"
+#  resource_path     = "/"
+#  failure_threshold = "5"
+#  request_interval  = "30"
+#
+#  tags = {
+#    Name = "garymcdermott.net-health-check"
+#  }
 #}
 
