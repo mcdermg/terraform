@@ -1,5 +1,6 @@
 #Teamcity Server
-data "aws_ami" "ubuntu" {
+
+data "aws_ami" "latest-ubuntu" {
   most_recent = true
 
   #  filter {
@@ -14,31 +15,36 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "random_pet" "name" {
+  length = "2"
+}
+
 resource "aws_instance" "teamcity" {
-  ami           = "${aws_ami.ubuntu.id}"
-  instance_type = "${var.instance_type}"
-  key_name      = "${var.key_name}"
-  user_data     = "${var.user_data}"
+  ami                    = "${data.aws_ami.latest-ubuntu.id}"
+  instance_type          = "${var.instance_type}"
+  key_name               = "${var.key_name}"
+  vpc_security_group_ids = ["${aws_security_group.teamcity_security_group.id}"]
+  user_data              = "${var.user_data}"
 
   lifecycle {
     ignore_changes = ["ami"]
   }
 
   tags {
-    Name  = "${var.Tag_Name}"
+    Name  = "Teamcity-${random_pet.name.id}"
     Stage = "${var.Tag_Stage}"
     Owner = "${var.Tag_Owner}"
   }
 
-  provisioner "local-exec" {
-    command = "echo EC2_IP : ${aws_instance.teamcity.public_ip}> serverDetails.txt"
-    command = "echo EC2_DNS: ${aws_instance.teamcity.public_dns}>> serverDetails.txt"
-  }
+  #  provisioner "local-exec" {
+  #    command = "echo EC2_IP : ${aws_instance.teamcity.public_ip}> serverDetails.txt"
+  #    command = "echo EC2_DNS: ${aws_instance.teamcity.public_dns}>> serverDetails.txt"
+  #  }
 }
 
 resource "aws_eip" "teamcity_eip" {
   instance   = "${aws_instance.teamcity.id}"
-  vpc        = false
+  vpc        = true
   depends_on = ["aws_instance.teamcity"]
 
   provisioner "local-exec" {

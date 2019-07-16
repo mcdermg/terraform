@@ -3,7 +3,7 @@ resource "aws_security_group" "teamcity_security_group" {
   description = "control access to teamcity server"
 
   tags {
-    Name  = "${var.Tag_Name}"
+    Name  = "Teamcity"
     Stage = "${var.Tag_Stage}"
     Owner = "${var.Tag_Owner}"
   }
