@@ -7,11 +7,15 @@ variable "region" {
 }
 
 variable "instance_type" {
-  default = "t2.medium"
+  default = "t3.small"
 }
 
 variable "key_name" {
   default = "teamcity2"
+}
+
+variable "iam_instance_profile" {
+  default = "EC2_SSM"
 }
 
 variable "user_data" {
@@ -30,3 +34,9 @@ variable "local_IP" {
   default     = "181.46.138.37"
   description = "Local workstation IP for ssh access"
 }
+
+variable "ssh_user" {
+  default = "ec2-user"
+}
+
+variable "private_key_path" {}
