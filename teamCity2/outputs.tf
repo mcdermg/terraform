@@ -7,6 +7,8 @@ output "teamcity_Public_IP" {
 #  value = "${aws_instance.teamcity.public_dns}"
 #}
 
+
 #output "Teamcity_EC2_IP" {
 #  value = "${aws_instance.teamcity.public_ip}"
 #}
+

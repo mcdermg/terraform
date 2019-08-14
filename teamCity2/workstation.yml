@@ -10,3 +10,4 @@
   roles:
      - { role: customization }
      - { role: monitoring }
+     - { role: docker}

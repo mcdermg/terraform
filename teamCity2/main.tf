@@ -1,5 +1,4 @@
-resource "random_pet" "name" {
-}
+resource "random_pet" "name" {}
 
 resource "aws_instance" "teamcity" {
   ami = "${lookup(var.teamcity-images, var.region)}"
@@ -28,19 +27,11 @@ resource "aws_instance" "teamcity" {
   user_data = "${var.user_data}"
 
   tags {
-    Name  = "${var.Tag_Name}-${random_pet.name.id}"
-    Owner = "${var.Tag_Owner}"
+    Name    = "${var.Tag_Name}-${random_pet.name.id}"
+    Owner   = "${var.Tag_Owner}"
     AutoOff = "True"
   }
-}
-
-resource "aws_eip" "teamcity_eip" {
-  instance   = "${aws_instance.teamcity.id}"
-  vpc        = true
-  depends_on = ["aws_instance.teamcity"]
-}
-
-provisioner "remote-exec" {
+ provisioner "remote-exec" {
   inline = ["echo 'Hello World!'"]
 
   connection {
@@ -52,4 +43,11 @@ provisioner "remote-exec" {
 
 provisioner "local-exec" {
   command = "export ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} workstation.yml"
+} 
+}
+
+resource "aws_eip" "teamcity_eip" {
+  instance   = "${aws_instance.teamcity.id}"
+  vpc        = true
+  depends_on = ["aws_instance.teamcity"]
 }

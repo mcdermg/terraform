@@ -34,6 +34,12 @@ variable "Tag_Owner" {
 
 variable "user_data" {}
 
+variable "private_key_path" {}
+
+variable "ssh_user" {
+  default = "ec2-user"
+}
+
 variable "local_IP" {
   default = "181.46.138.37"
 }
