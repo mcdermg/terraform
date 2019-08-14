@@ -1,0 +1,88 @@
+# roles/monitoring/tasks/main.yml
+
+### MONITORING ###
+---
+  # CHECK IF DATADOG EXISTS
+- name: check if DataDog exists already
+  stat:
+    path=/etc/datadog-agent/
+  register: stat_ddog
+
+  # INSTALL DATADOG AGENT
+- name: Install DataDog
+  command: DD_INSTALL_ONLY=true DD_API_KEY={{datadog_api_key}} bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/datadog-agent/master/cmd/agent/install_script.sh)"
+  when: stat_ddog.stat.exists == False
+
+#TODO REMOVE BELOW
+#  # CREATE DATADOG.CONF
+#- name: Create datadog.conf
+#  template:
+#    src: /home/mcdermg/repos/ansiblePi/templates/datadog.conf
+#    dest: /root/.datadog-agent/agent/datadog.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+#TODO REMOVE BELOW
+#  # ADD API KEY TO DATADOG DATADOG.CONF
+#- name: Add API key to DataDog datadog.conf
+#  replace:
+#    path: /root/.datadog-agent/agent/datadog.conf
+#    regexp: '# hostname: mymachine.mydomain'
+#    replace: 'hostname: raspberry.{{ inventory_hostname }}'
+#TODO REMOVE BELOW
+#  # ADD HOSTNAME TO DATADOG DATADOG.CONF
+#- name: Add Hostname to DataDog datadog.conf
+#  replace:
+#    path: /root/.datadog-agent/agent/datadog.conf
+#    regexp: 'api_key:'
+#    replace: 'api_key:{{ datadog_api_key }}'
+#
+#  # ADD TAGS TO DATADOG DATADOG.CONF
+#TODO CHECK PATH
+#- name: Add tags DataDog datadog.conf
+#  replace:
+#    path: /root/.datadog-agent/agent/datadog.conf
+#    regexp: '# tags: mytag, env:prod, role:database'
+#    replace: 'tags: env:dev, role:workstation'
+
+#TODO CHECK PATH
+  # ENABLE PROCESS AGENT DATADOG.CONF
+# - name: Enable process agent in datadog.conf
+#   replace:
+#     path: /root/.datadog-agent/agent/datadog.conf
+#     regexp: '# process_agent_enabled: false'
+#     replace: 'process_agent_enabled: true'
+
+#TODO REMOVE IF NOT REQUIRED
+# ADD datdor service file in system d
+#- name: Create datadog.service
+#  template:
+#    src: /home/mcdermg/repos/ansiblePi/templates/datadog.service
+#    dest: /etc/systemd/system/datadog.service
+#    owner: root
+#    group: root
+#    mode: 0644
+
+  # Start the Datadog service
+- name: Start datadog service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: started
+    name: datadog
+
+# PIP INSTALL DATADOG PYTHON LIBRARY
+#- name: pip install datadog
+#  pip:
+#    name: datadog
+
+#TODO NOT WORKING - see API guide manual test of API not working either
+## DATADOG EVENT
+#- name: DataDog Event
+#  datadog_event:
+#    title: Ansible notification
+#    text: Testing from {{ inventory_hostname }}
+#    priority: low
+#    alert_type: info
+#    api_key: "{{ datadog_api_key }}"
+#    app_key: "{{ datadog_app_key }}"

@@ -1,0 +1,13 @@
+[Unit]
+Description=datadog agent
+
+[Service]
+ExecStart=/root/.datadog-agent/bin/agent
+Execstop=/root/.datadog-agent/venv/bin/supervisorctl -c /root/.datadog-agent/agent/supervisor.conf shutdown
+
+Type=simple
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

@@ -38,5 +38,18 @@ resource "aws_eip" "teamcity_eip" {
   instance   = "${aws_instance.teamcity.id}"
   vpc        = true
   depends_on = ["aws_instance.teamcity"]
+}
 
+provisioner "remote-exec" {
+  inline = ["echo 'Hello World!'"]
+
+  connection {
+    type        = "ssh"
+    user        = "${var.ssh_user}"
+    private_key = "${file("${var.private_key_path}")}"
+  }
+}
+
+provisioner "local-exec" {
+  command = "export ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} workstation.yml"
 }
