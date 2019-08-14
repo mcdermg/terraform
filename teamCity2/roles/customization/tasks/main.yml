@@ -3,9 +3,9 @@
 ### CUSTOMIZATION ###
 ---
   # ADD Server fingerprint to known hosts (avoids ansible timeout/stuck waiting for yes/no response)
- - name: Write the new ec2 instance host key to known hosts
-   connection: local
-   shell: "ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts"
+- name: Write the new ec2 instance host key to known hosts
+  connection: local
+  shell: "ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts"
 
   # APT UPDATE
 - name: apt-get update

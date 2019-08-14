@@ -5,7 +5,7 @@ resource "aws_instance" "teamcity" {
 
   instance_type = "t3.small"
 
-  iam_instance_profile = "EC2_SSM_Profile"
+  iam_instance_profile = "EC2_SSM"
 
   vpc_security_group_ids = [
     "${aws_security_group.teamcity_security_group.id}",
@@ -24,26 +24,25 @@ resource "aws_instance" "teamcity" {
   }
 
   # TODO install docer pull containter start container
-  user_data = "${var.user_data}"
+  #user_data = "${var.user_data}"
 
   tags {
     Name    = "${var.Tag_Name}-${random_pet.name.id}"
     Owner   = "${var.Tag_Owner}"
     AutoOff = "True"
   }
- provisioner "remote-exec" {
-  inline = ["echo 'Hello World!'"]
+  provisioner "remote-exec" {
+    inline = ["echo 'Hello World!'"]
 
-  connection {
-    type        = "ssh"
-    user        = "${var.ssh_user}"
-    private_key = "${file("${var.private_key_path}")}"
+    connection {
+      type        = "ssh"
+      user        = "${var.ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
   }
-}
-
-provisioner "local-exec" {
-  command = "export ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} workstation.yml"
-} 
+  provisioner "local-exec" {
+    command = "ansible-playbook -i '${self.public_ip}' --private-key ${var.private_key_path} workstation.yml"
+  }
 }
 
 resource "aws_eip" "teamcity_eip" {

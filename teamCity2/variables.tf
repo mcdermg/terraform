@@ -32,9 +32,11 @@ variable "Tag_Owner" {
   default = "Gary Mc Dermott"
 }
 
-variable "user_data" {}
+#variable "user_data" {}
 
-variable "private_key_path" {}
+variable "private_key_path" {
+  default = "/home/mcdermg/.ssh/teamcity2"
+}
 
 variable "ssh_user" {
   default = "ec2-user"
