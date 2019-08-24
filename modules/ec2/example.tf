@@ -8,8 +8,23 @@ variable "user_data" {
     default = ""
 }
 
+data "aws_ami" "latest-ubuntu" {
+most_recent = true
+owners = ["099720109477"] # Canonical
+
+  filter {
+      name   = "name"
+      values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-18*"]
+  }
+
+  filter {
+      name   = "virtualization-type"
+      values = ["hvm"]
+  }
+}
+
 resource "aws_instance" "instance" {
-  ami           = "${var.ami}"
+  ami           = "${data.aws_ami.latest-ubuntu.id}"
   instance_type = "${var.instance_type}"
   key_name      = "${var.key_name}"
 
