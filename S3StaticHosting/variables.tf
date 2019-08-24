@@ -1,4 +1,6 @@
-variable "profile" {}
+variable "profile" {
+  default = "terraform"
+}
 
 variable "region" {
   default = "eu-west-1"
@@ -6,4 +8,6 @@ variable "region" {
 
 variable "bucket_name" {}
 
-variable "name_length" {}
+variable "name_length" {
+  default = 2
+}
