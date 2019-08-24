@@ -15,7 +15,7 @@ resource "aws_security_group" "securityGroup" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.sshIP}"]
+    cidr_blocks = ["${var.sshIP}/32"]
   }
 
   ingress {
@@ -31,4 +31,8 @@ resource "aws_security_group" "securityGroup" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+output "securityGroup_id" {
+  value = "${aws_security_group.securityGroup.id}"
 }
