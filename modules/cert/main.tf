@@ -15,13 +15,9 @@ variable "domain_name" {}
 
 variable "validation_method" {}
 
-variable "alternative_name_1" {}
-
-variable "alternative_name_2" {}
-
 resource "aws_acm_certificate" "cert" {
   domain_name               =  "${var.domain_name}"
-  subject_alternative_names = ["${var.alternative_name_1}", "${var.alternative_name_2}"]
+  subject_alternative_names = ["*.${var.domain_name}"]
   validation_method         =  "${var.validation_method}"
 
   lifecycle {
