@@ -1,0 +1,13 @@
+#Home Monitoring Project - Device setup- Gary Mc Dermott
+---
+
+- name: Setup
+  become: yes
+  hosts: all
+  vars_files:
+    - vars.yml
+  #gather_facts: no
+  roles:
+     - { role: customization }
+     - { role: monitoring }
+     - { role: docker}

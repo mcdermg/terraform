@@ -1,0 +1,128 @@
+# roles/customization/tasks/main.yml
+
+### CUSTOMIZATION ###
+---
+  # ADD Server fingerprint to known hosts (avoids ansible timeout/stuck waiting for yes/no response)
+- name: Write the new ec2 instance host key to known hosts
+  connection: local
+  shell: "ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts"
+
+  # APT UPDATE
+- name: apt-get update
+  apt:
+    update-cache: yes
+  become: true
+
+  # APT INSTALL GIT & ZSH
+- name: install git & zsh
+  become: yes
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - git
+    - zsh
+    - mc
+    - ncdu
+
+  # CREATE MC PANELS.INI
+- name: golden mc panels
+  template:
+    src: /home/mcdermg/repos/terraform/teamCitytemplates/panels.ini
+    dest: /home/ubuntu/.config/mc/panels.ini
+    owner: pi
+    group: pi
+    mode: 0644
+
+  # CREATE MC INI
+- name: golden mc ini
+  template:
+    src: /home/mcdermg/repos/terraform/teamCitytemplates/ini
+    dest: /home/ubuntu/.config/mc/ini
+    owner: pi
+    group: pi
+    mode: 0644
+
+  #CREATE REPO DIRECTORY
+- name: Creates repos directory
+  file:
+    path: /home/ubuntu/repos
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0755
+
+  # CHECK IF OH-MY-ZSH EXISTS
+- name: stat oh-my-zsh - check if exists
+  stat:
+    path=/home/ubuntu/.oh-my-zsh
+  register: stat1_result
+
+  #CLONE OH MY ZSH
+  # TODO USE GIT MODULE??
+  #https://github.com/gantsign/ansible-role-oh-my-zsh/blob/master/tasks/install.yml
+- name: clone oh-my-zsh for users if exits
+  tags:
+    # Suppress warning: [ANSIBLE0006] git used in place of git module
+    # Git module doesn't allow us to set `core.autocrlf=input`.
+    - skip_ansible_lint
+  become: yes
+  become_user: 'pi'
+  #TODO check if the reference issue occurs if remove core.autocrlf=input 20190509 GMcD
+  # core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
+  command: chdir=/home/pi git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh
+  when: stat1_result.stat.exists == False
+
+  #TODO check this is it required? 20190509 GMcD
+  # SET PERMISSIONS FOR ZSH USERS
+- name: set permissions of oh-my-zsh for users
+  become: yes
+  file:
+    path: '/home/ubuntu/.oh-my-zsh'
+    # Prevent the cloned repository from having insecure permissions. Failing to do
+    # so causes compinit() calls to fail with "command not found: compdef" errors
+    # for users with insecure umasks (e.g., "002", allowing group writability).
+    mode: 'go-w'
+    recurse: yes
+
+  # GOLDEN ZSH TEMPLATE
+- name: golden .zshrc
+  template:
+    src: /home/mcdermg/repos/terraform/teamCitytemplates/.zshrc
+    dest: /home/ubuntu/.zshrc
+    owner: pi
+    group: pi
+    #TODO no idea of chmod ccheck on existing pi 20190509 GMcD
+    #mode: 0600
+  register: task_result
+
+  # GOLDEN THEME FOR ZSH - RACOTECNIC
+- name: golden theme for oh my zsh
+  become: yes
+  template:
+    src: /home/mcdermg/repos/terraform/teamCitytemplates/racotecnic.zsh-theme
+    dest: /home/ubuntu/.oh-my-zsh/themes/racotecnic.zsh-theme
+    owner: pi
+
+  # SET ZSH AS DEFAULT SHELL FOR PI USER
+- name: set zsh default shell for pi user
+  become: yes
+  user:
+    name: 'pi'
+    shell: /bin/zsh
+
+  # ONLY REBOOTS IF GOLDEN .ZSHRC CHANGEd.
+  #TODO IS A REBOOT NEEDED??
+# - name: Reboot immediately if there was a change.
+#   shell: "sleep 5 && sudo reboot now"
+#   async: 1
+#   poll: 0
+#   when: task_result is changed
+#
+# - name: Wait for the reboot to complete if there was a change.
+#   wait_for_connection:
+#     connect_timeout: 20
+#     sleep: 5
+#     delay: 5
+#     timeout: 300
+#   when: task_result is changed

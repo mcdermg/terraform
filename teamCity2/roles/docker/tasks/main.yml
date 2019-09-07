@@ -1,0 +1,70 @@
+# roles/docker/tasks/main.yml
+
+### DOCKER ###
+---
+  # INSTALL PIP3
+- name: Install pip3
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [ 'python3-pip']
+
+  # ADD DOCKER GPG APT KEY
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+  # ADD DOCKER REPOSITRY
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+  # INSTALL DOCKER
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=latest
+
+  # INSTALL DOCKER MODULE FOR PYTHON
+- name: Install Docker Module for Python
+  pip:
+   name: docker
+
+# PULL TEAMCITY SERVER IMAGE
+- name: Pull TeamCity server Docker image
+  docker_image:
+    name: "jetbrains/teamcity-server"
+    source: pull
+
+# CREATES TEAMCITY SERVER CONTAINER ON PORT XXXX
+#- name: Create default containers
+#  docker_container:
+#    name: "TeamCity"
+#    image: "jetbrains/teamcity-server"
+#    See shell command below and try to refracter to here
+#    command: ""
+#    state: present
+
+#   START THE TEAMCITY CONTAINER #TODO TEST AS MAY NOT COMPLETE AS STAYS Up
+# - name: Pull default Docker image
+#  shell: docker run -it --name teamcity-server-instance -v /opt/teamcity:/data/teamcity_server/datadir -v /var/log/teamcity:/opt/teamcity/logs -p 80:8111 jetbrains/teamcity-server
+
+# PULL TEAMCITY AGENT IMAGE
+- name: Pull teamCity agent Docker image
+  docker_image:
+    name: "jetbrains/teamcity-agent"
+    source: pull
+
+# CREATES TEAMCITY AGENT CONTAINER ON PORT XXXX
+#- name: Create default containers
+#  docker_container:
+#    name: "TeamCity"
+#    image: "jetbrains/teamcity-agent"
+#    See shell command below and try to refracter to here
+#    command: ""
+#    state: present
+
+#   START THE TEAMCITY AGENT #TODO TEST AS MAY NOT COMPLETE AS STAYS Up
+# - name: Pull default Docker image
+#  shell:
+#docker run -it -e SERVER_URL="99.79.181.48:80"
+#-v <path>:/data/teamcity_agent/conf -v /var/run/docker.sock:/var/run/docker.sock -v /opt/buildagent/work:/opt/buildagent/work -v /opt/buildagent/temp:/opt/buildagent/temp -v /opt/buildagent/tools:/opt/buildagent/tools -v /opt/buildagent/plugins:/opt/buildagent/plugins -v /opt/buildagent/system:/opt/buildagent/system jetbrains/teamcity-agent
+#TODO NEED TO LOOK FOR teamcity_agent and add it to path in command above
