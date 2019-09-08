@@ -8,8 +8,12 @@ variable "sshIP" {
   default       = "181.46.138.37"
 }
 
+variable "security_group_name" {
+  default       = "allow_SSH"
+}
+
 resource "aws_security_group" "securityGroup" {
-  name          = "allow_SSH"
+  name          = ${var.security_group_name}
   description   = "Allow inbound SSH, HTTP & HTTPS"
   vpc_id        = "${aws_default_vpc.default.id}"
 
