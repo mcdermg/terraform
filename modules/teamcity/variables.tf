@@ -12,6 +12,7 @@ variable "user_data" {
   default = <<-EOF
     #! /bin/bash
     sudo yum -y update
+    sudo yum -y install git
     sudo yum -y install docker
     sudo usermod -aG docker $USER
     newgrp docker
