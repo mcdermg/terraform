@@ -13,7 +13,7 @@ variable "security_group_name" {
 }
 
 resource "aws_security_group" "securityGroup" {
-  name          = ${var.security_group_name}
+  name          = "${var.security_group_name}"
   description   = "Allow inbound SSH, HTTP & HTTPS"
   vpc_id        = "${aws_default_vpc.default.id}"
 
