@@ -1,7 +1,7 @@
-module "aws_security_group" {
-   source = "../security-group"
-   sshIP            = "181.46.138.37"
-}
+#module "aws_security_group" {
+#   source = "../security-group"
+#   sshIP            = "181.46.138.37"
+#}
 
 variable "instance_type" {
     default = "t3.micro"

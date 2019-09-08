@@ -1,15 +1,17 @@
 resource "aws_default_vpc" "default" {
   tags = {
-    Name = "Default VPC"
+    Name        = "Default VPC"
   }
 }
 
-variable "sshIP" {}
+variable "sshIP" {
+  default       = "181.46.138.37"
+}
 
 resource "aws_security_group" "securityGroup" {
-  name        = "allow_SSH"
-  description = "Allow inbound SSH, HTTP & HTTPS"
-  vpc_id      = "${aws_default_vpc.default.id}"
+  name          = "allow_SSH"
+  description   = "Allow inbound SSH, HTTP & HTTPS"
+  vpc_id        = "${aws_default_vpc.default.id}"
 
   ingress {
     from_port   = 22
@@ -25,11 +27,25 @@ resource "aws_security_group" "securityGroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-    ingress {
+  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
   }
 }
 
