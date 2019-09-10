@@ -15,7 +15,7 @@ terraform {
 }
 
 module "S3StaticHosting" {
-  source           = "../modules/s3StaticHosting/"
+  source           = "../../../modules/s3StaticHosting/"
   bucket_name      = "dataart"
   name_length      = 2
 }
