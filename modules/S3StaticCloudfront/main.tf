@@ -30,7 +30,7 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
 
 resource "aws_cloudfront_distribution" "website_cdn" {
   enabled      = true
-  price_class  = "PriceClass_200"
+  price_class  = "PriceClass_100"
   http_version = "http1.1"
   aliases      = ["${var.site_name}"]
 
