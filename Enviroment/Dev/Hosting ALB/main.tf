@@ -14,8 +14,8 @@ terraform {
   }
 }
 
-module "S3StaticHosting" {
-  source           = "../../../modules/s3StaticHosting/"
+module "S3StaticCloudfront" {
+  source           = "../../../modules/S3StaticCloudfront/"
   # This is the URL/Domain to be used
   site_name      = "celestialindustries.info"
 }
