@@ -1,7 +1,3 @@
-resource "random_pet" "suffix" {
-  length = "${var.name_length}"
-}
-
 resource "aws_s3_bucket" "logs" {
   bucket = "${var.site_name}-site-logs"
   acl    = "log-delivery-write"

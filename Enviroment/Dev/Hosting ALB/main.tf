@@ -16,8 +16,6 @@ terraform {
 
 module "S3StaticHosting" {
   source           = "../../../modules/s3StaticHosting/"
-  # TODO review and remove if required
-  bucket_name      = "dataart"
-  # TODO review and remove if required
-  name_length      = 2
+  # This is the URL/Domain to be used
+  site_name      = "celestialindustries.info"
 }
