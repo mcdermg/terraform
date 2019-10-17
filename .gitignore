@@ -28,6 +28,9 @@ override.tf.json
 *tfplan*
 *.plan
 
-#output files
+# Output files
 *.csv
 *.txt
+
+# Ansible vars.yml may contaiin sensitive content
+**/vars.yml
