@@ -5,6 +5,9 @@ resource "aws_instance" "report" {
   count         = 1
 
   #user_data = "${var.user_data}"
+  #TODO UPDATE TO USE AN AMI AS ALREADY HAVE REPORT SERVER SETUP AND RUNNING
+  # ami-020ebbdff7e2d66f5
+  # Seems to be variance between DA and this, need to run destroy from DA
 
   tags {
     Name  = "Terraform"
