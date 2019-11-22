@@ -23,16 +23,13 @@ resource "aws_instance" "teamcity" {
     "delete_on_termination" = false
   }
 
-  # TODO install docer pull containter start container
-  #user_data = "${var.user_data}"
-
   tags {
     Name    = "${var.Tag_Name}-${random_pet.name.id}"
     Owner   = "${var.Tag_Owner}"
     AutoOff = "True"
   }
   provisioner "remote-exec" {
-    inline = ["echo 'Hello World!'"]
+    inline = ["echo 'Instance now contatable via ssh'"]
 
     connection {
       type        = "ssh"
@@ -41,7 +38,7 @@ resource "aws_instance" "teamcity" {
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.public_ip}' --private-key ${var.private_key_path} workstation.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${self.public_ip}' --private-key ${var.private_key_path} ./roles/customization/tasks/main.yml"
   }
 }
 
@@ -49,4 +46,69 @@ resource "aws_eip" "teamcity_eip" {
   instance   = "${aws_instance.teamcity.id}"
   vpc        = true
   depends_on = ["aws_instance.teamcity"]
+}
+
+resource "aws_security_group" "teamcity_security_group" {
+  name        = "teamcity_security_group-${random_pet.name.id}"
+  description = "control access to teamcity server"
+
+  tags {
+    Owner = "${var.Tag_Owner}"
+  }
+}
+
+resource "aws_security_group_rule" "ingress_http" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "ingress_https" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "ingress_reply" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "ingress"
+  from_port         = 1024
+  to_port           = 65535
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "egress_reply" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "all"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "ingress_ssh" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["${var.local_IP}/32"]
+  description       = "SSH access for server management"
+}
+
+resource "aws_security_group_rule" "ingress_all" {
+  security_group_id = "${aws_security_group.teamcity_security_group.id}"
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "tcp"
+  cidr_blocks       = ["${var.local_IP}/32"]
+  description       = "Office access"
 }
