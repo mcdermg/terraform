@@ -10,3 +10,8 @@ module "vpc" {
   source             = "vpc"
   availability_zones = ["${data.aws_availability_zones.zones.names}"]
 }
+
+module "sg" {
+  source = "sg"
+  vpc_id = "${module.vpc.vpc_id}"
+}

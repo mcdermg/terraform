@@ -6,3 +6,7 @@ resource "aws_vpc" "vpc" {
     Name = "TeamCity VPC"
   }
 }
+
+output "vpc_id" {
+  value = "${aws_vpc.vpc.id}"
+}
