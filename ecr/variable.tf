@@ -1,6 +1,6 @@
 variable "profile" {
   default     = "terraform"
-  description = ""
+  description = "terrafrom profile with correct AWS permissions"
 }
 
 variable "region" {
