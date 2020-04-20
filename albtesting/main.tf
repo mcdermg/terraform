@@ -31,12 +31,6 @@ resource "aws_alb" "ALB" {
   }
 }
 
-resource "null_resource" "alb_exists" {
-  triggers {
-    alb_name = "${aws_alb.ALB.id}"
-  }
-}
-
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = "${aws_alb.ALB.id}"
   port              = "80"
