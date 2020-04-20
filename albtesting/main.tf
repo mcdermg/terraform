@@ -56,8 +56,6 @@ resource "aws_alb_target_group" "reporting" {
 
   vpc_id = "${var.vpc_id}"
 
-  #depends_on = ["null_resource.alb.exists"]
-
   tags {
     Name  = "Terraform"
     Stage = "${var.environment}"
